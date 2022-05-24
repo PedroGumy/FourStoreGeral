@@ -7,7 +7,6 @@ public class TransactionService {
 	ProductService productService = new ProductService();
 
 	public boolean sell(Transaction transaction) {
-		System.out.println("chamando transação...");
 
 		//multiplica valor do produto pela quantidade desejada
 		transaction.setPaymentValue(productService.getPrice(transaction.getProduct())

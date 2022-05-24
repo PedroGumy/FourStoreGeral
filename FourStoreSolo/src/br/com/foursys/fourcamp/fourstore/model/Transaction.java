@@ -1,5 +1,4 @@
 package br.com.foursys.fourcamp.fourstore.model;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import br.com.foursys.fourcamp.fourstore.enums.PaymentMethod;

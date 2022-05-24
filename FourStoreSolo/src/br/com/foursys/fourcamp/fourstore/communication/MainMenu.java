@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import br.com.foursys.fourcamp.fourstore.controller.ProductController;
 import br.com.foursys.fourcamp.fourstore.controller.TransactionController;
+import br.com.foursys.fourcamp.fourstore.enums.PaymentMethod;
 
 public class MainMenu {
 	Integer opt;
@@ -20,6 +21,7 @@ public class MainMenu {
 			System.out.print("| Opção 3 - Listar todos os produtos         |\n");
 			System.out.print("| Opção 4 - Registrar remoção de estoque     |\n");
 			System.out.print("| Opção 5 - Efetuar venda                    |\n");
+			System.out.print("| Opção 6 - Listar histórico de vendas       |\n");
 			System.out.print("| Opção 0 - Sair                             |\n");
 			System.out.print("|--------------------------------------------|\n");
 			System.out.print("|              Digite uma opção:             |\n");
@@ -45,6 +47,10 @@ public class MainMenu {
 			case 5:
 				userCallSell();
 				break;
+				
+			case 6:
+				userCallHistory();
+				break;
 
 			case 0:
 				System.out.println("Obrigado por utilizar nosso sistema!");
@@ -56,41 +62,29 @@ public class MainMenu {
 	}
 
 	public void userCallCreate() {
-		sc.nextLine();
-
-		String sku;
-		Double price;
-		Integer qtt;
-		String type;
-		String size;
-		String color;
-		String category;
-		String department;
-
 		System.out.println("Informe  a sku do produto:");
-		sku = sc.nextLine();
+		String sku = sc.next();
 
 		System.out.println("Informe  o preço do produto:");
-		price = sc.nextDouble();
+		Double price = sc.nextDouble();
 
 		System.out.println("Informe  a quantidade do produto:");
-		qtt = sc.nextInt();
+		Integer qtt = sc.nextInt();
 
 		System.out.println("Informe  o tipo do produto:");
-		sc.nextLine();
-		type = sc.nextLine();
+		String type = sc.next();
 
 		System.out.println("Informe  o tamanho do produto:");
-		size = sc.nextLine();
+		String size = sc.next();
 
 		System.out.println("Informe  a cor do produto:");
-		color = sc.nextLine();
+		String color = sc.next();
 
 		System.out.println("Informe  a categoria do produto:");
-		category = sc.nextLine();
+		String category = sc.next();
 
 		System.out.println("Informe  o departamento do produto:");
-		department = sc.nextLine();
+		String department = sc.next();
 
 		productController = new ProductController();
 		System.out.println(productController.addProduct(sku, price, qtt, type, size, color, category, department));
@@ -126,7 +120,8 @@ public class MainMenu {
 	}
 
 	public void userCallSell() {
-
+		String paymentData = null;
+		
 		System.out.println("Informe o SKU do produto que deseja comprar: ");
 		sc.nextLine();
 		String sku = sc.nextLine();
@@ -147,12 +142,26 @@ public class MainMenu {
 		Integer paymentMethod = sc.nextInt();
 		
 		//criar métodos para pegar cada pagamento
-		
 		TransactionController transactionController = new TransactionController();
-		System.out.println(transactionController.sell(sku, qtt, CPF, paymentMethod));
+		
+		//mostra na tela pro usuário digitar dados do cartão pix etc
+		if(transactionController.getPaymentData(paymentMethod).equals("erro")) {
+			System.out.println("Método de pagamento inválido.");
+			return;
+		}else {
+			System.out.println(transactionController.getPaymentData(paymentMethod));
+			paymentData = sc.next();
+		}
+		
+		
+		System.out.println(transactionController.sell(sku, qtt, CPF, paymentMethod, paymentData));
 		
 		
 
+	}
+	
+	public void userCallHistory() {
+		
 	}
 
 }
